@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DICOM.cs" />
-    <Compile Include="DICOM_dataset.cs" />
+    <Compile Include="DICOM_element.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +62,12 @@
     <Compile Include="WorkingForm.Designer.cs">
       <DependentUpon>WorkingForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="XmlViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XmlViewer.Designer.cs">
+      <DependentUpon>XmlViewer.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -74,6 +80,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="XmlViewer.resx">
+      <DependentUpon>XmlViewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Properties\DataSources\DICOM_elements.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

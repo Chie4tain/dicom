@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace dicom
 {
-    internal class DICOM : List<Dataset>
+    internal class DICOM : List<DICOM_Dataset>
     {
         string filename;
         BinaryReader reader;
-        public DICOM(string fname, DICOM_datasets D_elements)
+        public DICOM(string fname, DICOM_elements D_elements)
         {
             filename = fname;
             reader = new BinaryReader(File.Open(filename, FileMode.Open));
@@ -19,7 +19,7 @@ namespace dicom
             {
                 reader.ReadBytes(8); // пропускаем номер группы номер элемента vr и длину значения (2 байта)
                 uint length_0002 = reader.ReadUInt32();
-                Add(new Dataset(D_elements.Get_Dataset("0002", "0000"), 4, BitConverter.GetBytes(length_0002)));
+                Add(new DICOM_Dataset(D_elements.Get_Element("0002", "0000"), 4, BitConverter.GetBytes(length_0002)));
 
                 long group_0002_end = reader.BaseStream.Position + length_0002;
                 
@@ -47,15 +47,15 @@ namespace dicom
         }
     }
 
-    public class Dataset
+    public class DICOM_Dataset
     {
-        public DICOM_dataset DICOM_element;
+        public DICOM_element DICOM_element;
         public uint length;
         public byte[] data;
 
-        public Dataset(DICOM_dataset dICOM_element, uint length, byte[] data)
+        public DICOM_Dataset(DICOM_element p_DICOM_element, uint length, byte[] data)
         {
-            DICOM_element = dICOM_element;
+            DICOM_element = p_DICOM_element;
             this.length = length;
             this.data = data;
         }
