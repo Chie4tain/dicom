@@ -39,23 +39,12 @@ namespace dicom
                     if(group != null)
                     {
                         XmlNode element = node.Attributes.GetNamedItem("ElementID");
-                        // не работает, но попытка неплоха
-                        /*XmlNode element = node.SelectSingleNode("ElementID");
+
                         if (element != null)
                         {
                             string vr = "";
                             string name = "";
-                            vr = element.SelectSingleNode("VR")?.InnerText;
-                            name = element.SelectSingleNode("Name")?.InnerText;
-                            if (!string.IsNullOrEmpty(vr) && !string.IsNullOrEmpty(name))
-                            {
-                                Add(new DICOM_element(group.Value, element.Value, vr, name));
-                            }*/
-                        if (element != null)
-                        {
-                            string vr = "";
-                            string name = "";
-                            foreach (XmlNode Childnode in element.ChildNodes)
+                            foreach (XmlNode Childnode in node.ChildNodes)
                             {
                                 switch (Childnode.LocalName)
                                 {
