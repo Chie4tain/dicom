@@ -33,11 +33,13 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvDicomFile = new System.Windows.Forms.DataGridView();
+            this.bsDicomFile = new System.Windows.Forms.BindingSource(this.components);
             this.lengthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dicomElementGroupIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DicomElementID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataStr = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dicomElementVRDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dicomElementDescrDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.bsDicomFile = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDicomFile)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bsDicomFile)).BeginInit();
             this.SuspendLayout();
@@ -59,6 +61,8 @@
             this.dgvDicomFile.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.lengthDataGridViewTextBoxColumn,
             this.dicomElementGroupIDDataGridViewTextBoxColumn,
+            this.DicomElementID,
+            this.DataStr,
             this.dicomElementVRDataGridViewTextBoxColumn,
             this.dicomElementDescrDataGridViewTextBoxColumn});
             this.dgvDicomFile.DataSource = this.bsDicomFile;
@@ -86,11 +90,15 @@
             this.dgvDicomFile.Size = new System.Drawing.Size(800, 450);
             this.dgvDicomFile.TabIndex = 0;
             // 
+            // bsDicomFile
+            // 
+            this.bsDicomFile.DataSource = typeof(dicom.DICOM);
+            // 
             // lengthDataGridViewTextBoxColumn
             // 
             this.lengthDataGridViewTextBoxColumn.DataPropertyName = "length";
             this.lengthDataGridViewTextBoxColumn.FillWeight = 61.48352F;
-            this.lengthDataGridViewTextBoxColumn.HeaderText = "length";
+            this.lengthDataGridViewTextBoxColumn.HeaderText = "Length";
             this.lengthDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.lengthDataGridViewTextBoxColumn.Name = "lengthDataGridViewTextBoxColumn";
             this.lengthDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
@@ -99,17 +107,33 @@
             // 
             this.dicomElementGroupIDDataGridViewTextBoxColumn.DataPropertyName = "DicomElementGroupID";
             this.dicomElementGroupIDDataGridViewTextBoxColumn.FillWeight = 53.47594F;
-            this.dicomElementGroupIDDataGridViewTextBoxColumn.HeaderText = "DicomElementGroupID";
+            this.dicomElementGroupIDDataGridViewTextBoxColumn.HeaderText = "Group ID";
             this.dicomElementGroupIDDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.dicomElementGroupIDDataGridViewTextBoxColumn.Name = "dicomElementGroupIDDataGridViewTextBoxColumn";
             this.dicomElementGroupIDDataGridViewTextBoxColumn.ReadOnly = true;
             this.dicomElementGroupIDDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
+            // DicomElementID
+            // 
+            this.DicomElementID.DataPropertyName = "DicomElementID";
+            this.DicomElementID.HeaderText = "Element ID";
+            this.DicomElementID.MinimumWidth = 6;
+            this.DicomElementID.Name = "DicomElementID";
+            this.DicomElementID.ReadOnly = true;
+            // 
+            // DataStr
+            // 
+            this.DataStr.DataPropertyName = "DataStr";
+            this.DataStr.HeaderText = "Value";
+            this.DataStr.MinimumWidth = 6;
+            this.DataStr.Name = "DataStr";
+            this.DataStr.ReadOnly = true;
+            // 
             // dicomElementVRDataGridViewTextBoxColumn
             // 
             this.dicomElementVRDataGridViewTextBoxColumn.DataPropertyName = "DicomElementVR";
             this.dicomElementVRDataGridViewTextBoxColumn.FillWeight = 128.3468F;
-            this.dicomElementVRDataGridViewTextBoxColumn.HeaderText = "DicomElementVR";
+            this.dicomElementVRDataGridViewTextBoxColumn.HeaderText = "VR";
             this.dicomElementVRDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.dicomElementVRDataGridViewTextBoxColumn.Name = "dicomElementVRDataGridViewTextBoxColumn";
             this.dicomElementVRDataGridViewTextBoxColumn.ReadOnly = true;
@@ -118,14 +142,10 @@
             // 
             this.dicomElementDescrDataGridViewTextBoxColumn.DataPropertyName = "DicomElementDescr";
             this.dicomElementDescrDataGridViewTextBoxColumn.FillWeight = 128.3468F;
-            this.dicomElementDescrDataGridViewTextBoxColumn.HeaderText = "DicomElementDescr";
+            this.dicomElementDescrDataGridViewTextBoxColumn.HeaderText = "Description";
             this.dicomElementDescrDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.dicomElementDescrDataGridViewTextBoxColumn.Name = "dicomElementDescrDataGridViewTextBoxColumn";
             this.dicomElementDescrDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // bsDicomFile
-            // 
-            this.bsDicomFile.DataSource = typeof(dicom.DICOM);
             // 
             // WorkingForm
             // 
@@ -147,6 +167,8 @@
         private System.Windows.Forms.BindingSource bsDicomFile;
         private System.Windows.Forms.DataGridViewTextBoxColumn lengthDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dicomElementGroupIDDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DicomElementID;
+        private System.Windows.Forms.DataGridViewTextBoxColumn DataStr;
         private System.Windows.Forms.DataGridViewTextBoxColumn dicomElementVRDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dicomElementDescrDataGridViewTextBoxColumn;
     }

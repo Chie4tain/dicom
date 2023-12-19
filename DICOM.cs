@@ -46,6 +46,7 @@ namespace dicom
 
                 do
                 {
+                    
                     groupID = reader.ReadInt16().ToString("X4");
                     elementID = reader.ReadInt16().ToString("X4");
                     string vr = Encoding.ASCII.GetString(reader.ReadBytes(2));
@@ -55,7 +56,7 @@ namespace dicom
                     byte[] data = reader.ReadBytes((int)length);
 
                     Add(new DICOM_Dataset(D_elements.Get_Element(groupID, elementID), length, data, this));
-                } while (groupID != "0008" || elementID != "2111");
+                } while (!(groupID == "0008" && elementID == "2111"));
             }
             else
             {
