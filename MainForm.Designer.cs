@@ -91,7 +91,7 @@
             // openFDialog
             // 
             this.openFDialog.FileName = "new_file";
-            this.openFDialog.Filter = "DICOM files(*.dcm)|*.dcm |All files(*.*)|*.*";
+            this.openFDialog.Filter = "DICOM files(*.dcm)|*.dcm|All files(*.*)|*.*";
             // 
             // statusStrip
             // 

@@ -12,9 +12,14 @@ namespace dicom
 {
     public partial class WorkingForm : Form
     {
-        public WorkingForm()
+        DICOM dICOM_file;
+        public WorkingForm(DICOM p_dICOM_file)
         {
             InitializeComponent();
+
+            dICOM_file= p_dICOM_file;
+
+            bsDicomFile.DataSource = dICOM_file;
         }
     }
 }

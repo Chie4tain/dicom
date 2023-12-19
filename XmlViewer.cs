@@ -16,7 +16,8 @@ namespace dicom
         {
             InitializeComponent();
 
-            DataGridXmlViewer.DataSource = elements;
+            dICOMelementsBindingSource.DataSource = elements;
+
             DataGridXmlViewer.Refresh();
         }
     }

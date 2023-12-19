@@ -27,7 +27,8 @@ namespace dicom
                 try
                 {
                     DICOM dcm = new DICOM(openFDialog.FileName, p_DICOM_elements);
-                    WorkingForm newForm = new WorkingForm();
+
+                    WorkingForm newForm = new WorkingForm(dcm);
                     newForm.MdiParent = this;
                     newForm.Show();
                 }

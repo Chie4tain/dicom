@@ -80,9 +80,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="WorkingForm.resx">
+      <DependentUpon>WorkingForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="XmlViewer.resx">
       <DependentUpon>XmlViewer.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\DICOM.datasource" />
     <None Include="Properties\DataSources\DICOM_elements.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
