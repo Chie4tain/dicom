@@ -23,7 +23,8 @@ namespace dicom
             {
                 reader.ReadBytes(8); // пропускаем номер группы номер элемента vr и длину значения (2 байта)
                 uint length_0002 = reader.ReadUInt32();
-                Add(new DICOM_Dataset(D_elements.Get_Element("0002", "0000"), 4, BitConverter.GetBytes(length_0002), this));
+                DICOM_Dataset dataset = new DICOM_Dataset(D_elements.Get_Element("0002", "0000"), 4, BitConverter.GetBytes(length_0002), this);
+                Add(dataset);
 
                 long group_0002_end = reader.BaseStream.Position + length_0002;
 
@@ -35,20 +36,27 @@ namespace dicom
                 {
                     groupID = reader.ReadInt16().ToString("X4");
                     elementID = reader.ReadInt16().ToString("X4");
+                    
                     string vr = Encoding.ASCII.GetString(reader.ReadBytes(2));
 
                     uint length = ReadLength(vr);
 
                     byte[] data = reader.ReadBytes((int)length);
 
-                    Add(new DICOM_Dataset(D_elements.Get_Element(groupID, elementID), length, data, this));
+                    dataset = new DICOM_Dataset(D_elements.Get_Element(groupID, elementID), length, data, this);
+                    Add(dataset);
+
+                    if (dataset.DICOM_element.elementID == "0010")
+                    {
+                        isExplicitVR = dataset.DataStr == "1.2.840.10008.1.2.1";
+                    }
                 }
 
                 do
                 {
-                    
                     groupID = reader.ReadInt16().ToString("X4");
                     elementID = reader.ReadInt16().ToString("X4");
+
                     string vr = Encoding.ASCII.GetString(reader.ReadBytes(2));
 
                     uint length = ReadLength(vr);
