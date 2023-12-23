@@ -19,6 +19,8 @@ namespace dicom
             filename = fname;
             reader = new BinaryReader(File.Open(filename, FileMode.Open));
             encoding = Encoding.ASCII;
+            isExplicitVR = true;
+
             if (is_dicom())
             {
                 reader.ReadBytes(8); // пропускаем номер группы номер элемента vr и длину значения (2 байта)
@@ -48,23 +50,37 @@ namespace dicom
 
                     if (dataset.DICOM_element.elementID == "0010")
                     {
-                        isExplicitVR = dataset.DataStr == "1.2.840.10008.1.2.1";
+                        isExplicitVR = dataset.DataStr != "1.2.840.10008.1.2";
                     }
                 }
 
+                bool is_pixel_data = false;
+
                 do
                 {
+                    string vr = "";
+                    byte[] data = {};
+
                     groupID = reader.ReadInt16().ToString("X4");
                     elementID = reader.ReadInt16().ToString("X4");
+                    is_pixel_data = groupID == "7FE0" && elementID == "0010";
 
-                    string vr = Encoding.ASCII.GetString(reader.ReadBytes(2));
+                    if (isExplicitVR)
+                        vr = Encoding.ASCII.GetString(reader.ReadBytes(2));
 
                     uint length = ReadLength(vr);
 
-                    byte[] data = reader.ReadBytes((int)length);
+                    if (!is_pixel_data)
+                    {
+                        if (vr == "SQ")
+                            ReadSequence(length);
+                        else
+                            data = reader.ReadBytes((int)length); 
+                    }
 
                     Add(new DICOM_Dataset(D_elements.Get_Element(groupID, elementID), length, data, this));
-                } while (!(groupID == "0008" && elementID == "2111"));
+
+                } while (!is_pixel_data);
             }
             else
             {
@@ -76,15 +92,39 @@ namespace dicom
         private uint ReadLength(string vr)
         {
             uint result = 0;
-            if (vr == "OB" || vr == "OW" || vr == "UN" || vr == "UT" || vr == "SQ")
+            if(isExplicitVR)
             {
-                reader.ReadBytes(2);
+                if (vr == "OB" || vr == "OW" || vr == "UN" || vr == "UT" || vr == "SQ")
+                {
+                    reader.ReadBytes(2);
 
-                result = reader.ReadUInt32();
+                    result = reader.ReadUInt32();
+                }
+                else
+                    result = reader.ReadUInt16();
             }
             else
-                result = reader.ReadUInt16();
+                result = reader.ReadUInt32();
+
             return result;
+        }
+
+        private void ReadSequence(uint length)
+        {
+            if(length == 0xffffffff)
+            {
+                bool stop = false;
+                do
+                {
+                    ushort tmp = reader.ReadUInt16();
+                    if(tmp == 0xfffe)
+                    {
+                        tmp = reader.ReadUInt16();
+                        stop = tmp == 0xe0dd;
+                    }
+                } while (!stop);
+                reader.ReadBytes(4);
+            }
         }
 
         public bool is_dicom()
@@ -127,29 +167,55 @@ namespace dicom
         private string GetDataStr(Encoding cp)
         {
             string result = "";
-            switch (DICOM_element.vr)
+            if (DICOM_element.vr == "SQ")
+                result = "(Sequence)";
+            else
             {
-                case "SS":
-                    result = BitConverter.ToInt16(data, 0).ToString();
-                    break;
-                case "US":
-                    result = BitConverter.ToUInt16(data, 0).ToString();
-                    break;
-                case "SL":
-                    result = BitConverter.ToInt32(data, 0).ToString();
-                    break;
-                case "UL":
-                    result = BitConverter.ToUInt32(data, 0).ToString();
-                    break;
-                case "FL":
-                    result = BitConverter.ToSingle(data, 0).ToString();
-                    break;
-                case "FD":
-                    result = BitConverter.ToDouble(data, 0).ToString();
-                    break;
-                default: result = cp.GetString(data); break; //кодировка
+                if(length == 0)
+                    result = string.Empty;
+                else
+                {
+                    switch (DICOM_element.vr)
+                    {
+                        case "SS":
+                            result = BitConverter.ToInt16(data, 0).ToString();
+                            break;
+                        case "US":
+                            result = BitConverter.ToUInt16(data, 0).ToString();
+                            break;
+                        case "SL":
+                            result = BitConverter.ToInt32(data, 0).ToString();
+                            break;
+                        case "UL":
+                            result = BitConverter.ToUInt32(data, 0).ToString();
+                            break;
+                        case "FL":
+                            result = BitConverter.ToSingle(data, 0).ToString();
+                            break;
+                        case "FD":
+                            result = BitConverter.ToDouble(data, 0).ToString();
+                            break;
+                        default: result = cp.GetString(data); break; //кодировка
+                    }
+                }
             }
             return result.Trim(new char[] {(char)0});
         }
     }
 }
+
+// в воркинг форм добавить пикчербокс, реализовать вывод в xml: gr,el,vr,disc,length,datastr; public void SaveXML(string filename) fname передать из savedialog
+/*void SaveXML(string filename)
+ * {
+ * XmlDocument xml = new XmlDocument;
+ * XmlDeclaration decl = Xml.CreateDeclaration(...);
+ * Xml.AppendChild(decl);
+ * XmlNode root = Xml.CreateElement("Datasets");
+ * Xml.AppendChild(root);
+ * foreach(var in this)
+ * {
+ * root.AppendChild(ds.GetXmlNode(xml));
+ * }
+ * Xml.Save(fname);
+ * }
+*/
