@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using System.Xml;
 
 namespace dicom
 {
@@ -127,6 +129,20 @@ namespace dicom
             }
         }
 
+        void SaveXML(string filename)
+        {
+            XmlDocument Xml = new XmlDocument();
+            XmlDeclaration decl = Xml.CreateXmlDeclaration("1.0", "utf-8", null);
+            Xml.AppendChild(decl);
+            XmlNode root = Xml.CreateElement("Datasets");
+            Xml.AppendChild(root);
+            foreach (var ds in this)
+            {
+                root.AppendChild(ds.GetXmlNode(Xml));
+            }
+            Xml.Save(filename);
+        }
+
         public bool is_dicom()
         {
             reader.ReadBytes(128);
@@ -201,21 +217,40 @@ namespace dicom
             }
             return result.Trim(new char[] {(char)0});
         }
+
+        public XmlNode GetXmlNode(XmlDocument p_xml)
+        {
+            XmlNode xmlElement = p_xml.CreateElement("DataSet");
+            XmlAttribute xmlAttribute;
+
+            xmlAttribute = p_xml.CreateAttribute("GroupID");
+            xmlAttribute.Value = DICOM_element.groupID;
+            xmlElement.Attributes.Append(xmlAttribute);
+
+            xmlAttribute = p_xml.CreateAttribute("ElementID");
+            xmlAttribute.Value = DICOM_element.elementID;
+            xmlElement.Attributes.Append(xmlAttribute);
+
+            xmlAttribute = p_xml.CreateAttribute("Description");
+            xmlAttribute.Value = DICOM_element.DataSet_Description;
+            xmlElement.Attributes.Append(xmlAttribute);
+
+            XmlNode xmlVR = p_xml.CreateElement("VR");
+            xmlVR.InnerText = DICOM_element.vr;
+            xmlElement.AppendChild(xmlVR);
+
+            XmlNode xmlLength = p_xml.CreateElement("Length");
+            xmlLength.InnerText = length.ToString();
+            xmlElement.AppendChild(xmlLength);
+
+            XmlNode xmlValue = p_xml.CreateElement("Value");
+            xmlValue.InnerText = GetDataStr(Encoding.ASCII);
+            xmlElement.AppendChild(xmlValue);
+
+            return xmlElement;
+        }
     }
 }
 
 // в воркинг форм добавить пикчербокс, реализовать вывод в xml: gr,el,vr,disc,length,datastr; public void SaveXML(string filename) fname передать из savedialog
-/*void SaveXML(string filename)
- * {
- * XmlDocument xml = new XmlDocument;
- * XmlDeclaration decl = Xml.CreateDeclaration(...);
- * Xml.AppendChild(decl);
- * XmlNode root = Xml.CreateElement("Datasets");
- * Xml.AppendChild(root);
- * foreach(var in this)
- * {
- * root.AppendChild(ds.GetXmlNode(xml));
- * }
- * Xml.Save(fname);
- * }
-*/
+

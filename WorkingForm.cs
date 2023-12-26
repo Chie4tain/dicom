@@ -21,5 +21,11 @@ namespace dicom
 
             bsDicomFile.DataSource = dICOM_file;
         }
+
+        private void WorkingForm_Resize(object sender, EventArgs e)
+        {
+           // pbDicomWindow.Height = ClientSize.Width - dgvDicomFile.Height;
+           // pbDicomWindow.Location = new Point(0, dgvDicomFile.Height);
+        }
     }
 }

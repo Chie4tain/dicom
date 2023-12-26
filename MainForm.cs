@@ -64,5 +64,9 @@ namespace dicom
                 MessageBox.Show(ex.Message);
             }
         }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+        }
     }
 }
