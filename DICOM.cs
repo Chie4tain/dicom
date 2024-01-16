@@ -6,21 +6,35 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml;
+using System.Drawing;
+using System.Runtime.InteropServices;
+using System.Data;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace dicom
 {
     public class DICOM : List<DICOM_Dataset>
     {
-        string filename;
+        public string filename;
         BinaryReader reader;
         private bool isExplicitVR;
 
-        public Encoding encoding;
+        public Encoding charset;
+
+        public ushort BitsStored;
+        public Size BmpSize;
+        public double WW;
+        public double WL;
+        public Bitmap Bmp;
+
+        public DateTime datetime;
+        public string PatientName;
+
         public DICOM(string fname, DICOM_elements D_elements)
         {
             filename = fname;
             reader = new BinaryReader(File.Open(filename, FileMode.Open));
-            encoding = Encoding.ASCII;
+            charset = Encoding.ASCII;
             isExplicitVR = true;
 
             if (is_dicom())
@@ -57,6 +71,8 @@ namespace dicom
                 }
 
                 bool is_pixel_data = false;
+                int date = 00010101;
+                int time = 000000;
 
                 do
                 {
@@ -71,24 +87,101 @@ namespace dicom
                         vr = Encoding.ASCII.GetString(reader.ReadBytes(2));
 
                     uint length = ReadLength(vr);
-
+ 
                     if (!is_pixel_data)
                     {
                         if (vr == "SQ")
                             ReadSequence(length);
                         else
-                            data = reader.ReadBytes((int)length); 
+                            data = reader.ReadBytes((int)length);
+                    }
+                    else
+                    {
+                        data = Encoding.ASCII.GetBytes("");
+                        CreateBitmap();
                     }
 
+                    dataset = new DICOM_Dataset(D_elements.Get_Element(groupID, elementID), length, data, this);
+
+                    if (groupID == "0008" && elementID == "0005")
+                    {
+                        string s = Encoding.ASCII.GetString(data);
+                        switch (s)
+                        {
+                            case "ISO_IR 144":
+                                charset = Encoding.GetEncoding(28595); break;
+                            case "ISO 2022 IR 6\\IS":
+                                charset = Encoding.GetEncoding(1251); break;
+                            case "ISO_IR 192":
+                                charset = Encoding.UTF8; break;
+                        }
+                    }
+                    
+                    if (dataset.DICOM_element.groupID == "0008" && dataset.DICOM_element.elementID == "0020")
+                        date = Convert.ToInt32(dataset.GetDataStr(Encoding.ASCII));
+                    
+                    if (dataset.DICOM_element.groupID == "0008" && dataset.DICOM_element.elementID == "0030")
+                        time = Convert.ToInt32(dataset.GetDataStr(Encoding.ASCII));
+
+                    if (dataset.DICOM_element.groupID == "0010" && dataset.DICOM_element.elementID == "0010")
+                        PatientName = dataset.GetDataStr(Encoding.ASCII);
+
+                    if (dataset.DICOM_element.groupID == "0028" && dataset.DICOM_element.elementID == "0010")
+                        BmpSize.Height = BitConverter.ToUInt16(dataset.data, 0);
+                    else
+                    if (dataset.DICOM_element.groupID == "0028" && dataset.DICOM_element.elementID == "0011")
+                        BmpSize.Width = BitConverter.ToUInt16(dataset.data, 0);
+                    else
+                    if (dataset.DICOM_element.groupID == "0028" && dataset.DICOM_element.elementID == "0100")
+                        BitsStored = BitConverter.ToUInt16(dataset.data, 0);
+                    else
+                    if (dataset.DICOM_element.groupID == "0028" && dataset.DICOM_element.elementID == "1050")
+                        WL = Convert.ToDouble(dataset.GetDataStr(Encoding.ASCII));
+                    else
+                    if (dataset.DICOM_element.groupID == "0028" && dataset.DICOM_element.elementID == "1051")
+                        WW = Convert.ToDouble(dataset.GetDataStr(Encoding.ASCII));
+
+                    
                     Add(new DICOM_Dataset(D_elements.Get_Element(groupID, elementID), length, data, this));
 
                 } while (!is_pixel_data);
+                datetime = dataset.GetDateTime(date, time);
             }
             else
             {
                 reader.Close();
                 throw new FormatException("Is not a DICOM file");
             }     
+        }
+
+        private void CreateBitmap() //240000 байт (изнач) - 120000 пикселей(размер) - 360000 байт (в RGB)
+        {
+            int sourse_bpp = BitsStored / 8;
+            int target_bpp = 24 / 8; // RGB
+            byte[] soures = reader.ReadBytes(BmpSize.Width * BmpSize.Height * sourse_bpp);
+            byte[] target = new byte[BmpSize.Width * BmpSize.Height * target_bpp];
+            int j = 0;
+            for (int i = 0; i < soures.Length; i += sourse_bpp)
+            { 
+                int gray = soures[i] + (soures[i + 1] << 8);
+                int gray8bit;
+                if (gray <= (WL - 0.5 - (WW - 1) / 2))
+                    gray8bit = 0;
+                else if (gray > (WL - 0.5 + (WW - 1) / 2))
+                    gray8bit = 255;
+                else
+                    gray8bit = (int)(((gray - (WL - 0.5)) / (WW - 1) + 0.5) * 255);
+                target[j] = (byte)gray8bit;
+                target[j + 1] = (byte)gray8bit;
+                target[j + 2] = (byte)gray8bit;
+                j += 3;
+            }
+            int size = Marshal.SizeOf(target[0]) * target.Length;
+            IntPtr pointer = Marshal.AllocHGlobal(size);
+            Marshal.Copy(target, 0, pointer, size);
+
+            Bmp = new Bitmap(BmpSize.Width, BmpSize.Height, BmpSize.Width * target_bpp, System.Drawing.Imaging.PixelFormat.Format24bppRgb, pointer);
+            //Marshal.FreeHGlobal(pointer);
         }
 
         private uint ReadLength(string vr)
@@ -129,7 +222,7 @@ namespace dicom
             }
         }
 
-        void SaveXML(string filename)
+        public void SaveXML(string filename)
         {
             XmlDocument Xml = new XmlDocument();
             XmlDeclaration decl = Xml.CreateXmlDeclaration("1.0", "utf-8", null);
@@ -164,7 +257,7 @@ namespace dicom
         { 
             get 
             {
-               return  GetDataStr(parent.encoding);
+               return  GetDataStr(parent.charset);
             }
         }
 
@@ -180,7 +273,11 @@ namespace dicom
             parent = p_parent;
         }
 
-        private string GetDataStr(Encoding cp)
+        public DateTime GetDateTime( int date, int time)
+        {
+            return new DateTime(date / 10000, (date % 10000) / 100, date % 100, time / 10000, (time % 10000) / 100, time % 100);
+        }
+        public string GetDataStr(Encoding cp)
         {
             string result = "";
             if (DICOM_element.vr == "SQ")

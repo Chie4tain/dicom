@@ -29,35 +29,37 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvDicomFile = new System.Windows.Forms.DataGridView();
-            this.DicomElementID = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DataStr = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pbDicomWindow = new System.Windows.Forms.PictureBox();
             this.lengthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dicomElementGroupIDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DicomElementID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DataStr = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dicomElementVRDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dicomElementDescrDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.bsDicomFile = new System.Windows.Forms.BindingSource(this.components);
+            this.pbDicomWindow = new System.Windows.Forms.PictureBox();
+            this.panelpb = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDicomFile)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbDicomWindow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bsDicomFile)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDicomWindow)).BeginInit();
+            this.panelpb.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgvDicomFile
             // 
             this.dgvDicomFile.AutoGenerateColumns = false;
             this.dgvDicomFile.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDicomFile.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDicomFile.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvDicomFile.ColumnHeadersHeight = 32;
             this.dgvDicomFile.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvDicomFile.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -68,55 +70,29 @@
             this.dicomElementVRDataGridViewTextBoxColumn,
             this.dicomElementDescrDataGridViewTextBoxColumn});
             this.dgvDicomFile.DataSource = this.bsDicomFile;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDicomFile.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDicomFile.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvDicomFile.Dock = System.Windows.Forms.DockStyle.Top;
             this.dgvDicomFile.Location = new System.Drawing.Point(0, 0);
             this.dgvDicomFile.Name = "dgvDicomFile";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDicomFile.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDicomFile.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvDicomFile.RowHeadersWidth = 51;
             this.dgvDicomFile.RowTemplate.Height = 24;
-            this.dgvDicomFile.Size = new System.Drawing.Size(800, 143);
+            this.dgvDicomFile.Size = new System.Drawing.Size(933, 143);
             this.dgvDicomFile.TabIndex = 0;
-            // 
-            // DicomElementID
-            // 
-            this.DicomElementID.DataPropertyName = "DicomElementID";
-            this.DicomElementID.HeaderText = "Element ID";
-            this.DicomElementID.MinimumWidth = 6;
-            this.DicomElementID.Name = "DicomElementID";
-            this.DicomElementID.ReadOnly = true;
-            // 
-            // DataStr
-            // 
-            this.DataStr.DataPropertyName = "DataStr";
-            this.DataStr.HeaderText = "Value";
-            this.DataStr.MinimumWidth = 6;
-            this.DataStr.Name = "DataStr";
-            this.DataStr.ReadOnly = true;
-            // 
-            // pbDicomWindow
-            // 
-            this.pbDicomWindow.BackColor = System.Drawing.SystemColors.Desktop;
-            this.pbDicomWindow.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pbDicomWindow.Location = new System.Drawing.Point(0, 144);
-            this.pbDicomWindow.Name = "pbDicomWindow";
-            this.pbDicomWindow.Size = new System.Drawing.Size(800, 306);
-            this.pbDicomWindow.TabIndex = 1;
-            this.pbDicomWindow.TabStop = false;
             // 
             // lengthDataGridViewTextBoxColumn
             // 
@@ -136,6 +112,22 @@
             this.dicomElementGroupIDDataGridViewTextBoxColumn.Name = "dicomElementGroupIDDataGridViewTextBoxColumn";
             this.dicomElementGroupIDDataGridViewTextBoxColumn.ReadOnly = true;
             this.dicomElementGroupIDDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            // 
+            // DicomElementID
+            // 
+            this.DicomElementID.DataPropertyName = "DicomElementID";
+            this.DicomElementID.HeaderText = "Element ID";
+            this.DicomElementID.MinimumWidth = 6;
+            this.DicomElementID.Name = "DicomElementID";
+            this.DicomElementID.ReadOnly = true;
+            // 
+            // DataStr
+            // 
+            this.DataStr.DataPropertyName = "DataStr";
+            this.DataStr.HeaderText = "Value";
+            this.DataStr.MinimumWidth = 6;
+            this.DataStr.Name = "DataStr";
+            this.DataStr.ReadOnly = true;
             // 
             // dicomElementVRDataGridViewTextBoxColumn
             // 
@@ -159,19 +151,42 @@
             // 
             this.bsDicomFile.DataSource = typeof(dicom.DICOM);
             // 
+            // pbDicomWindow
+            // 
+            this.pbDicomWindow.BackColor = System.Drawing.SystemColors.Desktop;
+            this.pbDicomWindow.Location = new System.Drawing.Point(0, -52);
+            this.pbDicomWindow.Name = "pbDicomWindow";
+            this.pbDicomWindow.Size = new System.Drawing.Size(891, 424);
+            this.pbDicomWindow.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbDicomWindow.TabIndex = 1;
+            this.pbDicomWindow.TabStop = false;
+            // 
+            // panelpb
+            // 
+            this.panelpb.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelpb.AutoScroll = true;
+            this.panelpb.Controls.Add(this.pbDicomWindow);
+            this.panelpb.Location = new System.Drawing.Point(0, 144);
+            this.panelpb.Name = "panelpb";
+            this.panelpb.Size = new System.Drawing.Size(921, 344);
+            this.panelpb.TabIndex = 2;
+            // 
             // WorkingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.pbDicomWindow);
+            this.ClientSize = new System.Drawing.Size(933, 535);
+            this.Controls.Add(this.panelpb);
             this.Controls.Add(this.dgvDicomFile);
             this.Name = "WorkingForm";
             this.Text = "WorkingForm";
-            this.Resize += new System.EventHandler(this.WorkingForm_Resize);
+            this.Load += new System.EventHandler(this.WorkingForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDicomFile)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbDicomWindow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bsDicomFile)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbDicomWindow)).EndInit();
+            this.panelpb.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -187,5 +202,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dicomElementVRDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dicomElementDescrDataGridViewTextBoxColumn;
         private System.Windows.Forms.PictureBox pbDicomWindow;
+        private System.Windows.Forms.Panel panelpb;
     }
 }
